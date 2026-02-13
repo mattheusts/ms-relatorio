@@ -1,6 +1,5 @@
 package com.ufes.ms_relatorio.dto;
 
-import com.ufes.ms_relatorio.entity.TipoPeriodo;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -13,5 +12,4 @@ import java.time.LocalDate;
 public class RelatorioTotalPorPeriodoRequest {
     private LocalDate dataInicio;
     private LocalDate dataFim;
-    private TipoPeriodo tipoPeriodo;
 }

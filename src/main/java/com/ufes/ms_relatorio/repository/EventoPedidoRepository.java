@@ -37,6 +37,14 @@ public interface EventoPedidoRepository extends JpaRepository<EventoPedido, Long
 
         @Query("SELECT COALESCE(SUM(e.valorPedido), 0) FROM EventoPedido e " +
                         "WHERE e.dataPedido BETWEEN :dataInicio AND :dataFim " +
+                        "AND e.status IN :status")
+        BigDecimal somarValorPedidosPorStatus(
+                        @Param("dataInicio") LocalDateTime dataInicio,
+                        @Param("dataFim") LocalDateTime dataFim,
+                        @Param("status") List<StatusPedido> status);
+
+        @Query("SELECT COALESCE(SUM(e.valorPedido), 0) FROM EventoPedido e " +
+                        "WHERE e.dataPedido BETWEEN :dataInicio AND :dataFim " +
                         "AND e.status = 'CONCLUIDO'")
         BigDecimal somarVendasConcluidas(
                         @Param("dataInicio") LocalDateTime dataInicio,

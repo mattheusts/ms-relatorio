@@ -2,7 +2,6 @@ package com.ufes.ms_relatorio.controller;
 
 import com.ufes.ms_relatorio.dto.*;
 import com.ufes.ms_relatorio.entity.StatusPedido;
-import com.ufes.ms_relatorio.entity.TipoPeriodo;
 import com.ufes.ms_relatorio.service.EventoPedidoService;
 import com.ufes.ms_relatorio.service.RelatorioPedidosAtendidosCanceladosService;
 import com.ufes.ms_relatorio.service.RelatorioTotalPorPeriodoService;
@@ -26,14 +25,12 @@ public class RelatorioController {
     private final EventoPedidoService eventoPedidoService;
 
     @GetMapping("/total-por-periodo")
-    public ResponseEntity<?> totalPorPeriodo(
+    public ResponseEntity<RelatorioTotalPorPeriodoResponse> totalPorPeriodo(
             @RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
-            @RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim,
-            @RequestParam(defaultValue = "DIA") TipoPeriodo tipoPeriodo) {
+            @RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim) {
         RelatorioTotalPorPeriodoRequest request = RelatorioTotalPorPeriodoRequest.builder()
                 .dataInicio(dataInicio)
                 .dataFim(dataFim)
-                .tipoPeriodo(tipoPeriodo)
                 .build();
         try {
             RelatorioTotalPorPeriodoResponse response = relatorioTotalPorPeriodoService.gerar(request);

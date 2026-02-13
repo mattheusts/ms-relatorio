@@ -1,9 +1,9 @@
 package com.ufes.ms_relatorio.dto;
 
-import com.ufes.ms_relatorio.entity.TipoPeriodo;
 import lombok.*;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -11,7 +11,8 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class RelatorioTotalPorPeriodoResponse {
-    private List<TotalPorPeriodoItemDTO> itens;
-    private PeriodoDTO periodoConsulta;
-    private TipoPeriodo tipoPeriodo;
+    private LocalDate periodoInicio;
+    private LocalDate periodoFim;
+    private BigDecimal valorTotal;
+    private Long quantidadePedidos;
 }

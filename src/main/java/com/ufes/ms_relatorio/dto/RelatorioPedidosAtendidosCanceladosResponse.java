@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -20,4 +21,5 @@ public class RelatorioPedidosAtendidosCanceladosResponse {
     private long quantidadeAtendidos;
     private long quantidadeCancelados;
     private long saldo;
+    private BigDecimal saldoTotalAtendidos;
 }

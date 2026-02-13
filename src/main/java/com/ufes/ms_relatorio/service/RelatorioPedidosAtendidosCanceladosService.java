@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -44,12 +46,24 @@ public class RelatorioPedidosAtendidosCanceladosService {
                 dataFim,
                 statusCancelados);
 
+        BigDecimal saldoTotalAtendidos = eventoPedidoRepository.somarValorPedidosPorStatus(
+                dataInicio,
+                dataFim,
+                statusAtendidos);
+
+        if (saldoTotalAtendidos == null) {
+            saldoTotalAtendidos = BigDecimal.ZERO;
+        }
+
+        saldoTotalAtendidos = saldoTotalAtendidos.setScale(2, RoundingMode.HALF_UP);
+
         return RelatorioPedidosAtendidosCanceladosResponse.builder()
                 .dataInicio(dataInicio)
                 .dataFim(dataFim)
                 .quantidadeAtendidos(quantidadeAtendidos)
                 .quantidadeCancelados(quantidadeCancelados)
                 .saldo(quantidadeAtendidos - quantidadeCancelados)
+                .saldoTotalAtendidos(saldoTotalAtendidos)
                 .build();
     }
 }
