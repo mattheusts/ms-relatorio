@@ -30,6 +30,11 @@ public interface EventoPedidoRepository extends JpaRepository<EventoPedido, Long
                         StatusPedido status,
                         Pageable pageable);
 
+        long countByDataPedidoBetweenAndStatusIn(
+                        LocalDateTime dataInicio,
+                        LocalDateTime dataFim,
+                        List<StatusPedido> status);
+
         @Query("SELECT COALESCE(SUM(e.valorPedido), 0) FROM EventoPedido e " +
                         "WHERE e.dataPedido BETWEEN :dataInicio AND :dataFim " +
                         "AND e.status = 'CONCLUIDO'")

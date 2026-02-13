@@ -4,6 +4,7 @@ import com.ufes.ms_relatorio.dto.*;
 import com.ufes.ms_relatorio.entity.StatusPedido;
 import com.ufes.ms_relatorio.entity.TipoPeriodo;
 import com.ufes.ms_relatorio.service.EventoPedidoService;
+import com.ufes.ms_relatorio.service.RelatorioPedidosAtendidosCanceladosService;
 import com.ufes.ms_relatorio.service.RelatorioTotalPorPeriodoService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
 public class RelatorioController {
 
     private final RelatorioTotalPorPeriodoService relatorioTotalPorPeriodoService;
+    private final RelatorioPedidosAtendidosCanceladosService relatorioPedidosAtendidosCanceladosService;
     private final EventoPedidoService eventoPedidoService;
 
     @GetMapping("/total-por-periodo")
@@ -62,6 +64,16 @@ public class RelatorioController {
         RelatorioVendasTotalResponse response = RelatorioVendasTotalResponse.builder()
                 .totalVendas(totalVendas)
                 .build();
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/pedidos-atendidos-cancelados")
+    public ResponseEntity<RelatorioPedidosAtendidosCanceladosResponse> relatorioPedidosAtendidosCancelados(
+            @RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataInicio,
+            @RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataFim) {
+        RelatorioPedidosAtendidosCanceladosResponse response = relatorioPedidosAtendidosCanceladosService.gerar(
+                dataInicio,
+                dataFim);
         return ResponseEntity.ok(response);
     }
 }
