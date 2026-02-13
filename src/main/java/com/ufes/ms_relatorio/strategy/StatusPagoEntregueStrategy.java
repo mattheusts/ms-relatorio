@@ -8,7 +8,7 @@ import java.util.List;
 @Component
 public class StatusPagoEntregueStrategy implements CriterioVendaConcluida {
 
-    private static final List<StatusPedido> STATUS_CONCLUIDOS = List.of(StatusPedido.PAGO, StatusPedido.ENTREGUE);
+    private static final List<StatusPedido> STATUS_CONCLUIDOS = List.of(StatusPedido.CONCLUIDO);
 
     @Override
     public boolean isConcluido(StatusPedido status) {

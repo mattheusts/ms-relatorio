@@ -1,9 +1,9 @@
 package com.ufes.ms_relatorio.entity;
 
 public enum StatusPedido {
-    RASCUNHO,
-    PENDENTE,
-    PAGO,
-    ENTREGUE,
+    AGUARDANDO_PAGAMENTO,
+    EM_PREPARO,
+    SAIU_PARA_ENTREGA,
+    CONCLUIDO,
     CANCELADO
 }

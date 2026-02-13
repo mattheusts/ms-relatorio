@@ -1,9 +1,9 @@
 package com.ufes.ms_relatorio.service;
 
 import com.ufes.ms_relatorio.dto.*;
-import com.ufes.ms_relatorio.entity.Pedido;
+import com.ufes.ms_relatorio.entity.EventoPedido;
 import com.ufes.ms_relatorio.entity.TipoPeriodo;
-import com.ufes.ms_relatorio.repository.PedidoRepository;
+import com.ufes.ms_relatorio.repository.EventoPedidoRepository;
 import com.ufes.ms_relatorio.strategy.CriterioVendaConcluida;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RelatorioTotalPorPeriodoService {
 
-    private final PedidoRepository pedidoRepository;
+    private final EventoPedidoRepository eventoPedidoRepository;
     private final CriterioVendaConcluida criterioVendaConcluida;
 
     public RelatorioTotalPorPeriodoResponse gerar(RelatorioTotalPorPeriodoRequest request) {
@@ -31,15 +31,16 @@ public class RelatorioTotalPorPeriodoService {
         LocalDateTime dataFim = request.getDataFim().plusDays(1).atStartOfDay();
         List<com.ufes.ms_relatorio.entity.StatusPedido> statusList = criterioVendaConcluida.obterStatusConcluidos();
         if (statusList == null || statusList.isEmpty()) {
-            statusList = List.of(com.ufes.ms_relatorio.entity.StatusPedido.PAGO, com.ufes.ms_relatorio.entity.StatusPedido.ENTREGUE);
+            statusList = List.of(com.ufes.ms_relatorio.entity.StatusPedido.CONCLUIDO);
         }
 
-        List<Pedido> pedidos = pedidoRepository.findByDataPedidoBetweenAndStatusIn(dataInicio, dataFim, statusList);
+        List<EventoPedido> pedidos = eventoPedidoRepository.findByDataPedidoBetweenAndStatusIn(dataInicio, dataFim,
+                statusList);
 
         Map<LocalDate, Agregado> agregados = new LinkedHashMap<>();
-        for (Pedido p : pedidos) {
+        for (EventoPedido p : pedidos) {
             LocalDate chave = chavePeriodo(p.getDataPedido().toLocalDate(), tipo);
-            agregados.merge(chave, new Agregado(p.getValorTotal(), 1L), (a, b) -> new Agregado(
+            agregados.merge(chave, new Agregado(p.getValorPedido(), 1L), (a, b) -> new Agregado(
                     a.valorTotal.add(b.valorTotal), a.quantidade + b.quantidade));
         }
 
@@ -81,7 +82,8 @@ public class RelatorioTotalPorPeriodoService {
     }
 
     private LocalDate calcularPeriodoFim(LocalDate inicio, TipoPeriodo tipo) {
-        if (inicio == null) return null;
+        if (inicio == null)
+            return null;
         return switch (tipo) {
             case DIA -> inicio;
             case SEMANA -> inicio.plusDays(6);
@@ -90,7 +92,8 @@ public class RelatorioTotalPorPeriodoService {
     }
 
     private String formatarLabel(LocalDate inicio, TipoPeriodo tipo) {
-        if (inicio == null) return null;
+        if (inicio == null)
+            return null;
         return switch (tipo) {
             case DIA -> inicio.toString();
             case SEMANA -> "Semana " + inicio;

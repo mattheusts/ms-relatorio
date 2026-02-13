@@ -3,7 +3,6 @@ package com.ufes.ms_relatorio.exception;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -40,7 +39,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    public ResponseEntity<ErroDTO> handleParametroObrigatorio(MissingServletRequestParameterException ex, HttpServletRequest request) {
+    public ResponseEntity<ErroDTO> handleParametroObrigatorio(MissingServletRequestParameterException ex,
+            HttpServletRequest request) {
         ErroDTO dto = ErroDTO.builder()
                 .timestamp(Instant.now())
                 .status(HttpStatus.BAD_REQUEST.value())
@@ -52,7 +52,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<ErroDTO> handleTipoInvalido(MethodArgumentTypeMismatchException ex, HttpServletRequest request) {
+    public ResponseEntity<ErroDTO> handleTipoInvalido(MethodArgumentTypeMismatchException ex,
+            HttpServletRequest request) {
         ErroDTO dto = ErroDTO.builder()
                 .timestamp(Instant.now())
                 .status(HttpStatus.BAD_REQUEST.value())
