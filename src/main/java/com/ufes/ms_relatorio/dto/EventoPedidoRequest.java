@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 @Builder
 public class EventoPedidoRequest {
 
+  private Long id;
+
   @NotNull(message = "dataPedido é obrigatório")
   private LocalDateTime dataPedido;
 

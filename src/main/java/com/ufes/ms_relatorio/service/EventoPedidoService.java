@@ -2,6 +2,7 @@ package com.ufes.ms_relatorio.service;
 
 import com.ufes.ms_relatorio.dto.EventoPedidoRequest;
 import com.ufes.ms_relatorio.dto.EventoPedidoResponse;
+import com.ufes.ms_relatorio.dto.UpsertResult;
 import com.ufes.ms_relatorio.entity.EventoPedido;
 import com.ufes.ms_relatorio.entity.StatusPedido;
 import com.ufes.ms_relatorio.repository.EventoPedidoRepository;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,16 +25,29 @@ public class EventoPedidoService {
   private final EventoPedidoRepository eventoPedidoRepository;
 
   @Transactional
-  public EventoPedidoResponse salvar(EventoPedidoRequest request) {
-    EventoPedido evento = EventoPedido.builder()
+  public UpsertResult<EventoPedidoResponse> salvar(EventoPedidoRequest request) {
+    if (request.getId() != null) {
+      Optional<EventoPedido> existente = eventoPedidoRepository.findById(request.getId());
+
+      if (existente.isPresent()) {
+        EventoPedido pedido = existente.get();
+        pedido.setDataPedido(request.getDataPedido());
+        pedido.setValorPedido(request.getValorPedido());
+        pedido.setStatus(request.getStatus());
+
+        EventoPedido salvo = eventoPedidoRepository.save(pedido);
+        return new UpsertResult<>(toResponse(salvo), false);
+      }
+    }
+
+    EventoPedido novo = EventoPedido.builder()
         .dataPedido(request.getDataPedido())
         .valorPedido(request.getValorPedido())
         .status(request.getStatus())
         .build();
 
-    EventoPedido salvo = eventoPedidoRepository.save(evento);
-
-    return toResponse(salvo);
+    EventoPedido salvo = eventoPedidoRepository.save(novo);
+    return new UpsertResult<>(toResponse(salvo), true);
   }
 
   @Transactional(readOnly = true)

@@ -16,3 +16,4 @@ INSERT INTO evento_pedido (data_pedido, valor_pedido, status) VALUES
     ('2025-01-14 16:20:00', 320.75, 'CONCLUIDO'),
     ('2025-01-15 12:00:00', 75.00, 'CANCELADO'),
     ('2025-01-16 18:30:00', 199.99, 'SAIU_PARA_ENTREGA');
+
