@@ -1,0 +1,14 @@
+# Uso: docker compose -f compose.yaml -f compose.dev.yaml up --build
+services:
+  ms-relatorio:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: 'ms-relatorio:dev'
+    volumes:
+      - ./src:/app/src
+      - ./pom.xml:/app/pom.xml
+    environment:
+      - 'SPRING_DEVTOOLS_RESTART_ENABLED=true'
+      - 'SPRING_DEVTOOLS_RESTART_POLL_INTERVAL=2s'
+      - 'SPRING_DEVTOOLS_RESTART_QUIET_PERIOD=1s'
