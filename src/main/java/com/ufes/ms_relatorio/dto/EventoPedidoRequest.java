@@ -7,6 +7,8 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,4 +28,9 @@ public class EventoPedidoRequest {
 
   @NotNull(message = "status é obrigatório")
   private StatusPedido status;
+
+  private String nomeCliente;
+
+  @Builder.Default
+  private List<ItemPedidoRequest> itens = new ArrayList<>();
 }

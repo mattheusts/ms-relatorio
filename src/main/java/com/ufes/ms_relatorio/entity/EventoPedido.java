@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "evento_pedido")
@@ -28,4 +30,19 @@ public class EventoPedido {
   @Enumerated(EnumType.STRING)
   @Column(name = "status", nullable = false)
   private StatusPedido status;
+
+  @Column(name = "nome_cliente")
+  private String nomeCliente;
+
+  @OneToMany(mappedBy = "eventoPedido", cascade = CascadeType.ALL, orphanRemoval = true)
+  @Builder.Default
+  private List<ItemPedido> itens = new ArrayList<>();
+
+  public void adicionarItens(List<ItemPedido> novosItens) {
+    this.itens.clear();
+    if (novosItens != null) {
+      novosItens.forEach(item -> item.setEventoPedido(this));
+      this.itens.addAll(novosItens);
+    }
+  }
 }
