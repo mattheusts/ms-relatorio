@@ -2,8 +2,9 @@ package com.ufes.ms_relatorio.dto;
 
 import com.ufes.ms_relatorio.entity.StatusPedido;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -26,10 +27,10 @@ public class EventoPedidoRequest {
   @Schema(description = "Data e hora do pedido", example = "2026-02-18T19:30:00")
   private LocalDateTime dataPedido;
 
-  @NotNull(message = "valorPedido é obrigatório")
-  @Positive(message = "valorPedido deve ser maior que zero")
-  @Schema(description = "Valor total do pedido", example = "89.90")
-  private BigDecimal valorPedido;
+  @NotNull(message = "valorDesconto é obrigatório")
+  @DecimalMin(value = "0.00", inclusive = true, message = "valorDesconto deve ser maior ou igual a zero")
+  @Schema(description = "Valor de desconto aplicado ao pedido", example = "10.00")
+  private BigDecimal valorDesconto;
 
   @NotNull(message = "status é obrigatório")
   @Schema(description = "Status atual do pedido", example = "AGUARDANDO_PAGAMENTO")
@@ -40,5 +41,6 @@ public class EventoPedidoRequest {
 
   @Builder.Default
   @Schema(description = "Lista de itens do pedido")
+  @Valid
   private List<ItemPedidoRequest> itens = new ArrayList<>();
 }
