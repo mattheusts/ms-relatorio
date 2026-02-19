@@ -27,10 +27,10 @@ public class EventoPedidoRequest {
   @Schema(description = "Data e hora do pedido", example = "2026-02-18T19:30:00")
   private LocalDateTime dataPedido;
 
-  @NotNull(message = "valorDesconto é obrigatório")
-  @DecimalMin(value = "0.00", inclusive = true, message = "valorDesconto deve ser maior ou igual a zero")
-  @Schema(description = "Valor de desconto aplicado ao pedido", example = "10.00")
-  private BigDecimal valorDesconto;
+  @NotNull(message = "totalComDesconto é obrigatório")
+  @DecimalMin(value = "0.00", inclusive = true, message = "totalComDesconto deve ser maior ou igual a zero")
+  @Schema(description = "Total do pedido com desconto aplicado", example = "89.90")
+  private BigDecimal totalComDesconto;
 
   @NotNull(message = "status é obrigatório")
   @Schema(description = "Status atual do pedido", example = "AGUARDANDO_PAGAMENTO")

@@ -12,9 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,7 +30,7 @@ public class EventoPedidoServiceImpl implements EventoPedidoService {
       if (existente.isPresent()) {
         EventoPedido pedido = existente.get();
         pedido.setDataPedido(request.getDataPedido());
-        pedido.setValorPedido(request.getValorDesconto());
+        pedido.setValorPedido(request.getTotalComDesconto());
         pedido.setStatus(request.getStatus());
         pedido.setNomeCliente(request.getNomeCliente());
         pedido.adicionarItens(eventoPedidoMapper.toEntityList(request.getItens()));
@@ -45,7 +42,7 @@ public class EventoPedidoServiceImpl implements EventoPedidoService {
 
     EventoPedido novo = EventoPedido.builder()
         .dataPedido(request.getDataPedido())
-        .valorPedido(request.getValorDesconto())
+        .valorPedido(request.getTotalComDesconto())
         .status(request.getStatus())
         .nomeCliente(request.getNomeCliente())
         .build();
